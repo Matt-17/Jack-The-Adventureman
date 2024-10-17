@@ -64,7 +64,7 @@ Procedure FLoad_Items;
 Procedure FLoad_Pieces;
 Procedure FLoad_Enemies;
 
-Procedure Check_KeyB; Interrupt;
+Procedure Check_KeyB; 
 
 Procedure Save_World(Name : String);
 Procedure Load_World(Name : String);
@@ -120,7 +120,7 @@ Begin
   Str(I, S);
   IntToStr := S;
 End;
-Procedure Check_KeyB;
+Procedure Check_KeyB; Interrupt;
 Var
   Key : Byte;
 Begin
