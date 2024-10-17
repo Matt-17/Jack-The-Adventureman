@@ -1,0 +1,34 @@
+name: Build Pascal
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v3
+
+      - name: Free Pascal herunterladen
+        run: |
+          Invoke-WebRequest -Uri https://sourceforge.net/projects/freepascal/files/Win32/3.2.2/fpc-3.2.2.i386-win32.exe -OutFile fpc-installer.exe
+          Start-Process -FilePath fpc-installer.exe -ArgumentList '/VERYSILENT', '/DIR=C:\fpc' -Wait
+
+      - name: Free Pascal in den Pfad setzen
+        run: echo "C:\fpc\bin\i386-win32" | Out-File -FilePath $env:GITHUB_PATH -Encoding ascii
+
+      - name: Projekt kompilieren
+        run: fpc -ooutput/executable Source/Jack.pas
+
+      - name: Artefakte hochladen
+        uses: actions/upload-artifact@v3
+        with:
+          name: executable
+          path: output/executable.exe
